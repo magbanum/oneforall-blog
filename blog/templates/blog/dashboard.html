@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %} {% block content %} {% if user.is_authenticated %}
+<center>
+    <h1 style="font-family: cursive;">{{ user.first_name }} {{ user.last_name }}</h1>
+    <small style="letter-spacing: 1px;">@{{ user.username }}</small>
+</center>
+
+<h3>My Posts</h3>
+
+<div class="list-group">
+    {% for post in object_list %} {% if user.id == post.author.id %}
+    <a href="{% url 'article-detail' post.pk %}" class="list-group-item list-group-item-action" style="background-color: rgb(228, 228, 228); padding: 20px; border-radius: 5px;">
+        <div class="d-flex w-100 justify-content-between">
+            <h3 class="mb-1">{{ post.title }}</h3>
+            <small>{{ post.post_date }}</small>
+        </div>
+
+        <p class="mb-1">{{ post.body|slice:'100' }}</p>
+        <small><i class="fas fa-user"></i> {{ post.author.first_name }} {{ post.author.last_name }} </small>
+        <small><a href="{% url 'edit_post' post.pk %}">Edit</a>/<a href="{% url 'delete_post' post.pk %}">Delete</a></small>{% endif %}
+    </a><br> {% endfor %}
+</div>
+
+{% else %} You are not logged in {% endif %} {% endblock %}

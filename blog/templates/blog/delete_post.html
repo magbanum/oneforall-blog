@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}{% block title %} Delete blog post {% endblock %} {% block content %}
+
+<br> {% if user.is_authenticated %} {% if user.id == post.author.id %}
+<h1>Delete: {{ post.title }}</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    <strong>Are you sure?!</strong><br><br>
+    <button class="btn btn-secondary">Delete Post</button>
+</form>
+{% else %} You are not allowed here {% endif %} {% else %} You are not logged in {% endif %}{% endblock %}

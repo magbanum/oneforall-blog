@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+<!--<br> {% for blog in blogs %}
+<a href="{{ blog.url }}">
+    <img src="{{ blog.urlToImage }}" alt="" style="width: 500px;"></a>
+<h3>{{ blog.title }}</h3>
+
+{% endfor %}-->
+{% block content %}
+<h2 style="text-align: center; font-family: sans-serif;">Blog Posts</h2><br>
+<div class="list-group">
+    {% for post in page_obj %}
+    <a href="{% url 'article-detail' post.pk %}" class="list-group-item list-group-item-action" style="background-color: rgb(228, 228, 228); padding: 20px; border-radius: 5px;">
+        <div class="d-flex w-100 justify-content-between">
+            <h3 class="mb-1">{{ post.title }}</h3>
+            <small>{{ post.post_date }}</small>
+        </div>
+
+        <p class="mb-1" style="width: 50%;">{{ post.body|slice:'100' }}</p>
+
+
+        <small class="mb-1"><i class="fas fa-user"></i> {{ post.author.first_name }} {{ post.author.last_name }}</small>
+        <small style="display: inline;">{% if user.is_authenticated %} {% if user.id == post.author.id %}
+                    <a href="{% url 'edit_post' post.pk %}"  >Edit</a>/<a href="{% url 'delete_post' post.pk %}" >Delete</a>{% endif %} {% endif %}</small>
+    </a>
+
+    <br> {% endfor %}
+</div>
+<br>
+<center>
+    <div class="pagination" style="width: fit-content;">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="page-link" style="display: inline;">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link" style="display: inline;">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span> {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="page-link" style="display: inline;">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link" style="display: inline;">last &raquo;</a> {% endif %}
+        </span>
+    </div>
+</center>
+<br><br> {% endblock %}
