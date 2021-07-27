@@ -6,7 +6,7 @@ import blog.views
 from .views import AddPostView, EditView, HomeView, ArticleDetailView, DeletePostView, MyPostsView
 
 urlpatterns = [
-    path('news_articles', blog.views.newsview, name='news_posts'),
+    path('hashnode-latest-posts/', blog.views.HashnodeView, name='hashnode_posts'),
     path('', HomeView.as_view(), name="home"),
     path('articles/<int:pk>',ArticleDetailView.as_view(), name='article-detail'),
     path('add_post/', AddPostView.as_view(), name='add_post'),
