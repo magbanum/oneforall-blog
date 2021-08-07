@@ -1,0 +1,23 @@
+{% extends "blog/base_home.html" %}
+{% block title %} One for all Blog : Register {% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<strong class="text-center"> You are already logged in.</strong>
+{% else %} 
+<br>
+<h3 class="p-4 fst text-center">
+    Register
+</h3>
+<hr>
+<div class="position-relative border border-1 m-5 p-3 rounded">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">Register</button>
+    </form>
+</div>
+<p class="text-center">Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
+{% endif %}
+
+{% endblock %}

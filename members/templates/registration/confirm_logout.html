@@ -1,0 +1,20 @@
+{% extends "blog/base_home.html" %}
+{% block title %} Confirm Logout? {% endblock %}
+{% block content %}{% if user.is_authenticated %}
+
+<br>
+<h3 class="pb-4 fst text-center">
+    {{ user.first_name }} {{ user.last_name }}
+</h3>
+
+<div class="position-relative text-center border border-1 m-5 p-3 rounded">
+
+    <strong>Are you sure you want to Log out?</strong><br><br>
+    <a href="{% url 'logout' %}" class="btn btn-danger">Yes, Log out</a>
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">No, Go back</a>
+<hr>
+
+</div>
+{% else %} You are already Logged-out.{% endif %}
+{% endblock %}
+

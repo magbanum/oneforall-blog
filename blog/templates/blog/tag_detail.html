@@ -1,0 +1,49 @@
+{% extends "blog/base_home.html" %}
+{% block title %} Tag : {{ object.title }} {% endblock %}
+{% block content %}
+
+
+<br>
+<h3 class="pb-4 fst text-center">
+    {{object.title}}
+</h3>
+<hr>
+<div class="col-md-8 ">
+    {% for post in tag_list.post_set.all %}
+    <div class="card">
+        <div class="card-header">
+            <p class="blog-post-meta mb-0">{{ post.created_on }} by <a href="">{{post.author.first_name }}
+                    {{post.author.last_name }}</a></p>
+        </div>
+        <a class="text-decoration-none" href="{% url 'post_detail' post.author post.slug %}">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.content|slice:":200" }}</p>
+                <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+        </a>
+
+        <div class="card-footer ">
+            <div class="container p-0 d-flex justify-content-around">
+
+                <div class="ps-2 pe-2 bd-highlight">
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-item"><a href="{% url 'tag_detail' post.tags.pk %}"><span
+                                    class="badge bg-light text-dark">{{ post.tags }}</span></a></li>
+                    </ul>
+                </div>
+                <div class="ps-2 pe-2 bd-highlight">
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-item"><i class="far fa-heart"> 20</i></li>
+                        <li class="list-item"><i class="far fa-comments"> 5</i></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    {% endfor %}
+</div>
+
+{% endblock content %}

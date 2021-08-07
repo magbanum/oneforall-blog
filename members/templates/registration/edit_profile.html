@@ -1,0 +1,20 @@
+{% extends "blog/base_home.html" %}
+{% block title %} {{ user.get_full_name }} : Edit Profile{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<br>
+<h3 class="pb-4 fst text-center">
+    Edit Profile
+</h3>
+<hr>
+<div class="position-relative border border-1 m-5 p-3 rounded">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">Update profile</button>
+    </form>
+</div>
+{% else %}
+<strong class="text-center">Login to edit your profile.</strong>
+{% endif %}
+{% endblock %}

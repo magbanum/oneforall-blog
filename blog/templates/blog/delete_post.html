@@ -1,0 +1,27 @@
+{% extends "blog/base_home.html" %}
+{% block title %} One for all Blog : Delete post {% endblock %}
+{% block content %}
+
+<br>
+<h3 class="pb-4 fst text-center">
+    {{ post.title}}
+</h3>
+<hr>
+{% if user.is_authenticated %} {% if user.id == post.author.id %}
+
+
+<div class="position-relative text-center border border-1 m-5 p-3 rounded">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <strong>Are you sure you want to delete this post? It can't be undone! </strong>
+        <strong>Instead you can Edit the post status to "Draft".</strong><br><br>
+        <button class="btn btn-danger">Delete Post</button>
+    </form>
+    <hr>
+    <a href="{% url 'edit_post' user post.slug %}" class="btn btn-primary">Edit</a>
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Back</a>
+</div>
+
+{% else %} You are not allowed here {% endif %} {% else %} You are not logged in {% endif %}
+{% endblock %}
+

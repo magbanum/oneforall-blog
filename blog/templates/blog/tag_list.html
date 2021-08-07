@@ -1,0 +1,22 @@
+{% extends "blog/base_home.html" %}
+{% block title %} One for all Blog : Tags{% endblock %}
+{% block content %}
+<br>
+<h3 class="pb-4 fst text-center">
+    Tags
+</h3>
+<hr>
+<div class="container">
+    <ul class="list-group d-flex flex-wrap col-6">
+        {% for tag in tag_list %}
+        <a href="{% url 'tag_detail' tag.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            {{ tag.title }} 
+            <span class="badge bg-primary rounded-pill">{{ tag.post_set.all.count }}</span>
+        </a>
+       
+        {% endfor %}
+    </ul>
+   
+</div>
+
+{% endblock content %}

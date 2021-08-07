@@ -1,0 +1,21 @@
+{% extends "blog/base_home.html" %}
+{% block title %} One for all Blog : Create post {% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+
+<br>
+<h3 class="pb-4 fst text-center">
+    Create post
+</h3>
+<hr>
+<div class="ms-4 me-4">
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-outline-dark me-2">Save</button>
+</form>
+</div>
+{% else %}
+<strong>You are not logged in.</strong>
+{% endif %}
+{% endblock %}

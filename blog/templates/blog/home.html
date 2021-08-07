@@ -1,0 +1,182 @@
+{% extends "blog/base_home.html" %}
+{% block content %}
+<!-- <div class="container">
+  <div class="nav-scroller py-1 mb-2">
+    <nav class="nav d-flex justify-content-between">
+      <a class="p-2 link-secondary" href="#">World</a>
+      <a class="p-2 link-secondary" href="#">U.S.</a>
+      <a class="p-2 link-secondary" href="#">Technology</a>
+      <a class="p-2 link-secondary" href="#">Design</a>
+      <a class="p-2 link-secondary" href="#">Culture</a>
+      <a class="p-2 link-secondary" href="#">Business</a>
+      <a class="p-2 link-secondary" href="#">Politics</a>
+      <a class="p-2 link-secondary" href="#">Opinion</a>
+      <a class="p-2 link-secondary" href="#">Science</a>
+      <a class="p-2 link-secondary" href="#">Health</a>
+      <a class="p-2 link-secondary" href="#">Style</a>
+      <a class="p-2 link-secondary" href="#">Travel</a>
+    </nav>
+  </div>
+</div> -->
+
+<main class="container">
+  <!-- <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4 fst-italic">Title of a longer featured blog post</h1>
+      <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently
+        about what’s most interesting in this post’s contents.</p>
+      <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
+    </div>
+  </div> -->
+
+  <!-- <div class="row mb-2">
+    <div class="col-md-6">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary">World</strong>
+          <h3 class="mb-0">Featured post</h3>
+          <div class="mb-1 text-muted">Nov 12</div>
+          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to
+            additional content.</p>
+          <a href="#" class="stretched-link">Continue reading</a>
+        </div>
+        <div class="col-auto d-none d-lg-block">
+          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img"
+            aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+              dy=".3em">Thumbnail</text>
+          </svg>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-success">Design</strong>
+          <h3 class="mb-0">Post title</h3>
+          <div class="mb-1 text-muted">Nov 11</div>
+          <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.
+          </p>
+          <a href="#" class="stretched-link">Continue reading</a>
+        </div>
+        <div class="col-auto d-none d-lg-block">
+          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img"
+            aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+              dy=".3em">Thumbnail</text>
+          </svg>
+
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="row ">
+    <div class="col-md-7 me-lg-3">
+      <br>
+      <h3 class="pb-4 fst">
+        Latest posts
+      </h3>
+      <hr>
+      <div class="list-group">
+        {% for post in page_obj %}
+
+        <div class="card">
+          <div class="card-header">
+            <p class="blog-post-meta mb-0">{{ post.created_on }} by <a href="">{{post.author.first_name }}
+                {{post.author.last_name }}</a></p>
+          </div>
+          <a href="{% url 'post_detail' post.author post.slug %}">
+            <div class="card-body">
+              <h5 class="card-title">{{ post.title }}</h5>
+              <p class="card-text">{{ post.content|slice:":200" }}</p>
+            </div>
+          </a>
+
+          <div class="card-footer ">
+            <div class="container p-0 d-flex justify-content-around">
+
+              <div class="ps-2 pe-2 bd-highlight">
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-item"><a href="{% url 'tag_detail' post.tags.pk %}"><span
+                        class="badge bg-light text-dark">{{ post.tags }}</span></a></li>
+                </ul>
+              </div>
+              <div class="ps-2 pe-2 bd-highlight">
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-item"><i class="far fa-heart"> 20</i></li>
+                  <li class="list-item"><i class="far fa-comments"> 5</i></li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        {% endfor %}
+      </div>
+      <center>
+        <div class="pagination" style="width: fit-content;">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="page-link" style="display: inline;">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link" style="display: inline;">previous</a>
+            {% endif %}
+
+            <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span> {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link" style="display: inline;">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link" style="display: inline;">last
+              &raquo;</a>
+            {% endif %}
+          </span>
+        </div>
+      </center>
+      <hr>
+
+
+    </div>
+
+    {% block sidebar %}
+    
+    <div class="col-md-4">
+      <br>
+      <div class="position-sticky" style="top: 2rem;">
+        <div class="p-4 mb-3 bg-light rounded">
+          <h4 class="fst-italic">About</h4>
+          <p class="mb-0">Welcome to our blog!
+            Here on One for all you can create and share you articles based on any topic. Why wait then sign up and
+            start sharing your interisting articles now.
+          </p>
+        </div>
+
+        <div class="p-4">
+          <h4 class="fst-italic">Archives</h4>
+          <ol class="list-unstyled mb-0">
+            <li><a href="#">March 2021</a></li>
+            <li><a href="#">February 2021</a></li>
+            <li><a href="#">January 2021</a></li>
+            <li><a href="#">December 2020</a></li>
+            <li><a href="#">November 2020</a></li>
+            <li><a href="#">October 2020</a></li>
+            <li><a href="#">September 2020</a></li>
+            <li><a href="#">August 2020</a></li>
+            <li><a href="#">July 2020</a></li>
+            <li><a href="#">June 2020</a></li>
+            <li><a href="#">May 2020</a></li>
+            <li><a href="#">April 2020</a></li>
+          </ol>
+        </div>
+
+
+      </div>
+    </div>
+    {% endblock sidebar %}
+  </div>
+
+</main>
+{% endblock content %}

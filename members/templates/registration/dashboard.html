@@ -1,0 +1,105 @@
+{% extends "blog/base_home.html" %}
+{% block title %} {{ user.get_full_name }} : Dashboard {% endblock %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<main class="container">
+  <br>
+  <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4 fst-italic">{{ user.first_name }} {{ user.last_name }}</h1>
+      <p class="lead my-3">@{{ user }}</p>
+      <p class="lead mb-0"><a href="{% url 'edit_user' user %}" class="text-white fw-bold">Edit Profile</a></p>
+    </div>
+  </div>
+
+
+  <div class="row ">
+    <div class="col-md-7 me-lg-3">
+      <br>
+      <h3 class="pb-4 fst-italic">
+        Latest posts
+      </h3>
+      <hr>
+      <div class="list-group">
+        {% for post in post_list %}
+        <!-- {% if post.auther.id == user.id %} -->
+        <div class="card">
+          <div class="card-header">
+            <p class="blog-post-meta mb-0">{{ post.created_on }}</p>
+          </div>
+          <a href="{% url 'post_detail' post.author post.slug %}">
+            <div class="card-body">
+              <h5 class="card-title">{{ post.title }}</h5>
+            </div>
+          </a>
+
+          <div class="card-footer ">
+            <div class="container p-0 d-flex justify-content-around">
+
+              <div class="ps-2 pe-2 bd-highlight">
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-item"><a href="{% url 'tag_detail' post.tags.pk %}"><span
+                        class="badge bg-light text-dark">{{ post.tags }}</span></a></li>
+                </ul>
+              </div>
+              <div class="ps-2 pe-2 bd-highlight">
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-item"><i class="far fa-heart"> 20</i></li>
+                  <li class="list-item"><i class="far fa-comments"> 5</i></li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <!-- {% endif %} -->
+        {% endfor %}
+      </div>
+      <!-- <center>
+        <div class="pagination" style="width: fit-content;">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="page-link" style="display: inline;">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link" style="display: inline;">previous</a>
+            {% endif %}
+
+            <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span> {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link" style="display: inline;">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link" style="display: inline;">last
+              &raquo;</a>
+            {% endif %}
+          </span>
+        </div>
+      </center> -->
+      <hr>
+
+
+    </div>
+
+    {% block sidebar %}
+    
+    <div class="col-md-4">
+      <br>
+      <div class="position-sticky" style="top: 2rem;">
+        <div class="p-4 mb-3 bg-light rounded">
+          <h4 class="fst-italic">{{ user.first_name }} {{ user.last_name }}</h4>
+          <p class="mb-0">Welcome to our blog!
+            Here on One for all you can create and share you articles based on any topic. Why wait then sign up and
+            start sharing your interisting articles now.
+          </p>
+        </div>
+
+      </div>
+    </div>
+    {% endblock sidebar %}
+  </div>
+  {% else %}
+  <strong>You are not logged in.</strong>
+  {% endif %}
+</main>
+
+{% endblock content %}

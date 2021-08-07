@@ -1,0 +1,21 @@
+{% extends 'blog/base_home.html' %} 
+{% block title %} {{ post.title }} {% endblock %}
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+        <h1>{{ object.title }}</h1>
+        <p class=" text-muted">{{ post.author }} | {{ post.created_on }}
+          {% if user.is_authenticated %} {% if user.id == post.author.id %}
+          <span><a href="{% url 'edit_post' post.author post.slug %}">Edit</a></span> <span><a href="{% url 'delete_post' user post.slug %}">Delete</a></span></p>
+          {% endif %} {% endif %}
+        <p class="card-text ">{{ object.content | safe }}</p>
+      </div>
+    </div>
+   
+  </div>
+</div>
+
+{% endblock content %}
