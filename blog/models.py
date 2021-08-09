@@ -3,11 +3,21 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.template.defaultfilters import slugify
 from django.urls.base import reverse_lazy
-# Create your models here.
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
+import markdown # pip install markdown
+from bs4 import BeautifulSoup # pip install beautifulsoup4
+
 POST_STATUS = (
     (0, 'Draft'),
     (1, 'Published')
 )
+
+# To convert Markdown to Plain text
+def md_to_text(md):
+    html = markdown.markdown(md)
+    soup = BeautifulSoup(html, features='html.parser')
+    return soup.get_text()
 
 # non_url_safe = ['"', '#', '$', '%', '&', '+',
 #                     ',', '/', ':', ';', '=', '?',
@@ -40,7 +50,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
     updated_on = models.DateTimeField(auto_now=True)
-    content = models.TextField()
+    content = MarkdownxField()
     tags = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=POST_STATUS, default=0)
@@ -59,6 +69,12 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('post_detail', args=(self.author, self.slug))
+
+    def formatted_markdown(self):
+        return markdownify(self.content)
+
+    def body_summary(self):
+        return md_to_text(self.content[:200] + "...")
 
     # def save(self, *args, **kwargs):
     #     if not self.slug:

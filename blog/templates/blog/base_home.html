@@ -7,15 +7,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %} One for all Blog : Home {% endblock %}</title>
+
+  {% block css %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
   <!-- CSS only -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <!-- JavaScript Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static 'markdownx/admin/css/markdownx.css' %}">
+  <!-- <link rel="stylesheet" href="{% static 'markdownx/admin/css/markdownx.min.css' %}"> -->
+  {% endblock %}
+ 
 
 </head>
 
@@ -56,8 +58,8 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDarkDropdownMenuLink">
               <li>
-                  <h6 class="dropdown-header">{{ user.first_name }} {{ user.last_name }}</h6>
-                  <a class="dropdown-item" href="">@{{ user }}</a>
+                <h6 class="dropdown-header">{{ request.user.first_name }} {{ request.user.last_name }}</h6>
+                <a class="dropdown-item" href="">@{{ request.user }}</a>
               </li>
               <li></li>
 
@@ -65,8 +67,8 @@
                 <hr class="dropdown-divider">
               </li>
 
-              <li><a class="dropdown-item" href="{% url 'create_post' user %}">Create post</a></li>
-              <li><a class="dropdown-item" href="{% url 'dashboard' user %}">Dashboard</a></li>
+              <li><a class="dropdown-item" href="{% url 'create_post' request.user %}">Create post</a></li>
+              <li><a class="dropdown-item" href="{% url 'dashboard' request.user %}">Dashboard</a></li>
               <li><a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a></li>
 
               <li>
@@ -89,16 +91,29 @@
       </div>
     </div>
   </nav>
-  
-    {% block content %}
-    {% endblock %}
- 
+
+  {% block content %}
+  {% endblock %}
+
   <hr>
   <footer class="footer mt-auto py-3 bg-dark ">
     <div class="container">
       <span class="m-0 text-light text-center">Copyright &copy; magbanum</span>
+      <hr>
+      <a href="http://www.djangoproject.com/"><img
+          src="https://www.djangoproject.com/m/img/badges/djangoproject120x25.gif" border="0" alt="A Django project."
+          title="A Django project." /></a>
     </div>
   </footer>
+
+  {% block js %}
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="{% static 'markdownx/js/markdownx.js' %}"></script>
+  {% endblock %}
+
 </body>
 
 </html>

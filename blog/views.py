@@ -22,7 +22,8 @@ class TagList(ListView):
 
 class TagDetail(DetailView):
     model = Tag
-    context_object_name = 'tag_list'
+    slug_field = 'title'
+    context_object_name = 'tag'
     template_name = 'blog/tag_detail.html'
 
 class CreatePost(CreateView):
@@ -34,8 +35,11 @@ class CreatePost(CreateView):
         return reverse('post_detail', args=(self.object.author, self.object.slug))
     
     def get_object(self):
-        return self.request.user
+        return self.request.user.username
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 class EditPost(UpdateView):
     model = Post

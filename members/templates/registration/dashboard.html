@@ -1,9 +1,13 @@
 {% extends "blog/base_home.html" %}
-{% block title %} {{ user.get_full_name }} : Dashboard {% endblock %}
-{% block content %}
-
 {% if user.is_authenticated %}
+
+{% block title %} {{ user.get_full_name }} : Dashboard {% endblock %}
+
+{% block content %}
+{% if request.user == user %}
+
 <main class="container">
+
   <br>
   <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
     <div class="col-md-6 px-0">
@@ -23,65 +27,51 @@
       <hr>
       <div class="list-group">
         {% for post in post_list %}
-        <!-- {% if post.auther.id == user.id %} -->
+
         <div class="card">
           <div class="card-header">
-            <p class="blog-post-meta mb-0">{{ post.created_on }}</p>
+            <p class="blog-post-meta mb-0">
+              Created on: {{ post.created_on }}
+              {% if post.updated_on != post.created_on %}
+              <span> | Updated on: {{ post.updated_on }}</span>
+              {% endif %}
+            </p>
           </div>
           <a href="{% url 'post_detail' post.author post.slug %}">
             <div class="card-body">
               <h5 class="card-title">{{ post.title }}</h5>
             </div>
           </a>
-
           <div class="card-footer ">
             <div class="container p-0 d-flex justify-content-around">
-
               <div class="ps-2 pe-2 bd-highlight">
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-item"><a href="{% url 'tag_detail' post.tags.pk %}"><span
+                  <li class="list-item"><a href="{% url 'tag_detail' post.tags %}"><span
                         class="badge bg-light text-dark">{{ post.tags }}</span></a></li>
                 </ul>
               </div>
-              <div class="ps-2 pe-2 bd-highlight">
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-item"><i class="far fa-heart"> 20</i></li>
-                  <li class="list-item"><i class="far fa-comments"> 5</i></li>
+              
 
+          
+              <div class="ps-2 pe-2 bd-highlight">
+                {% if user.id == post.author.id %}
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-item "><a href="{% url 'edit_post' post.author post.slug %}"><i class="far fa-edit text-success"></i> Edit</a></i></li>
+                  <li class="list-item "><a href="{% url 'delete_post' user post.slug %}"><i class="far fa-trash-alt text-danger"></i> Delete</a></li>
                 </ul>
+                {% endif %}
               </div>
             </div>
           </div>
         </div>
         <br>
-        <!-- {% endif %} -->
         {% endfor %}
       </div>
-      <!-- <center>
-        <div class="pagination" style="width: fit-content;">
-          <span class="step-links">
-            {% if page_obj.has_previous %}
-            <a href="?page=1" class="page-link" style="display: inline;">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}" class="page-link" style="display: inline;">previous</a>
-            {% endif %}
-
-            <span class="current">
-              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span> {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="page-link" style="display: inline;">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link" style="display: inline;">last
-              &raquo;</a>
-            {% endif %}
-          </span>
-        </div>
-      </center> -->
-      <hr>
-
 
     </div>
 
     {% block sidebar %}
-    
+
     <div class="col-md-4">
       <br>
       <div class="position-sticky" style="top: 2rem;">
@@ -97,9 +87,20 @@
     </div>
     {% endblock sidebar %}
   </div>
-  {% else %}
-  <strong>You are not logged in.</strong>
-  {% endif %}
 </main>
 
-{% endblock content %}
+{% else %}
+<div class="alert alert-danger text-center" role="alert">
+  You are not allowed here. And you know that.
+</div>
+{% include 'registration/access_denied.html' %}
+
+{% endif %}
+
+{% endblock %}
+{% else %}
+{% include 'registration/access_denied.html' %}
+<div class="alert alert-danger text-center" role="alert">
+  Login required to view this page.
+</div>
+{% endif %}

@@ -1,5 +1,7 @@
 {% extends "blog/base_home.html" %}
+
 {% block content %}
+
 <!-- <div class="container">
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
@@ -92,7 +94,7 @@
           <a href="{% url 'post_detail' post.author post.slug %}">
             <div class="card-body">
               <h5 class="card-title">{{ post.title }}</h5>
-              <p class="card-text">{{ post.content|slice:":200" }}</p>
+              <p class="card-text">{{ post.body_summary }}</p>
             </div>
           </a>
 
@@ -101,7 +103,7 @@
 
               <div class="ps-2 pe-2 bd-highlight">
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-item"><a href="{% url 'tag_detail' post.tags.pk %}"><span
+                  <li class="list-item"><a href="{% url 'tag_detail' post.tags %}"><span
                         class="badge bg-light text-dark">{{ post.tags }}</span></a></li>
                 </ul>
               </div>
