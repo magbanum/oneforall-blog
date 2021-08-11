@@ -2,7 +2,6 @@
 {% block title %} {{ post.title }} {% endblock %}
 
 
-
 {% block content %}
 
 <div class="container">
@@ -12,7 +11,7 @@
         <h1>{{ object.title }}</h1>
         <p class=" text-muted">{{ post.author.get_full_name }} | {{ post.created_on }} 
           {% if user.is_authenticated %} {% if user.id == post.author.id %}
-            <span><a href="{% url 'edit_post' post.author post.slug %}"><i class="far fa-edit text-success"></i></a></span> <span><a href="{% url 'delete_post' user post.slug %}"><i class="far fa-trash-alt text-danger"></i></a></span></p>
+            <span><a href="{% url 'edit_post' post.author post.slug %}"><i class="far fa-edit text-success"></i></a></span> <span><a href="{% url 'delete_post' request.user post.slug %}"><i class="far fa-trash-alt text-danger"></i></a></span></p>
           {% endif %} {% endif %}
         <hr>
         <p class="card-text ">{{ post.formatted_markdown|safe }}</p>

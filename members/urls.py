@@ -1,4 +1,4 @@
-from members.views import EditUser, PasswordChangedView, PasswordChangingView, UserDashboard, UserLoginView, UserLogoutView, UserRegisterView
+from members.views import EditUser, PasswordChangedView, PasswordChangingView, UserDashboard, UserLoginView, UserLogoutView, UserProfile, UserRegisterView
 from django.urls import path
 from django.contrib.auth.views import LogoutView, PasswordResetCompleteView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetView
 
@@ -10,7 +10,8 @@ urlpatterns = [
     path('password_success/', PasswordChangedView.as_view(), name='change_password_done'),
     path('register', UserRegisterView.as_view(), name='register'),
     path('<slug>/dashboard', UserDashboard.as_view(), name='dashboard'),
-    path('<username>/edit', EditUser.as_view(), name='edit_user'),
+    path('<slug>/', UserProfile.as_view(), name='profile'),
+    path('<slug>/edit', EditUser.as_view(), name='edit_user'),
     path('reset_password/', PasswordResetView.as_view(template_name='registration/password_reset.html'), name='reset_password'),
     path('reset_password_sent/', PasswordResetDoneView.as_view(template_name='registration/password_reset_sent.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='registration/password_reset_form.html'), name='password_reset_confirm'),

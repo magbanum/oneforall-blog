@@ -1,3 +1,4 @@
+from blog.forms import PostForm
 from django.db import models
 from blog.models import Post, Tag
 from django.contrib import admin
@@ -13,10 +14,10 @@ class PostAdmin(admin.ModelAdmin):
         models.TextField: {'widget': AdminMarkdownxWidget},
     }
 
-# class TagAdmin(admin.ModelAdmin):
-#     list_display = ('title', 'slug', 'created_on')
-#     search_fields = ['title']
-#     prepopulated_fields = {'slug': ('title',)}
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_on')
+    search_fields = ['title']
+    
 
 admin.site.register(Post, PostAdmin)
-admin.site.register(Tag)
+admin.site.register(Tag, TagAdmin)

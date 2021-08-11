@@ -3,13 +3,12 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-
 <br>
 <h3 class="pb-4 fst text-center">
     Edit post
 </h3>
 <hr>
-{% if user.id == post.author.id %}
+{% if request.user.id == post.author.id %}
 <div class="ms-4 me-4">
     {{ form.non_field_errors }}
     <form class="row g-3" method="POST" action="">{% csrf_token %}
@@ -23,7 +22,7 @@
             <label for="{{ form.content.id_for_label }}" class="form-label">Content: [ Markdown Supported ] <a
                     href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"><i
                         class="fas fa-info-circle"></i></a></i></label>
-            
+
             {{ form.content }}
         </div>
 
@@ -46,9 +45,15 @@
     {{ form.media }}
 </div>
 {% else %}
-<strong>You are not allowed to Edit this post. Log in to the account from where the post was created.</strong>
+<div class="alert alert-danger text-center" role="alert">
+    You are not allowed here. And you know that.
+</div>
+{% include 'registration/access_denied.html' %}
 {% endif %}
 {% else %}
-<strong>Login to edit post.</strong>
+{% include 'registration/access_denied.html' %}
+<div class="alert alert-danger text-center" role="alert">
+    Login required to view this page.
+</div>
 {% endif %}
 {% endblock %}

@@ -12,9 +12,13 @@
     <strong>Are you sure you want to Log out?</strong><br><br>
     <a href="{% url 'logout' %}" class="btn btn-danger">Yes, Log out</a>
     <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">No, Go back</a>
-<hr>
+    <hr>
 
 </div>
-{% else %} You are already Logged-out.{% endif %}
+{% else %}
+<div class="alert alert-danger text-center" role="alert">
+    You are already logged out.
+</div>
+{% include 'registration/access_denied.html' %}
+{% endif %}
 {% endblock %}
-

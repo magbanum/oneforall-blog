@@ -1,22 +1,195 @@
-{% extends "blog/base_home.html" %}
-{% block title %} One for all Blog : Login {% endblock %}
-{% block content %}
-{% if user.is_authenticated %}
-<strong class="text-center"> You are already logged in.</strong>
-{% else %} 
-<h3 class="p-4 fst text-center">
-    Login
-</h3>
-<hr>
-<div class="position-relative text-center border border-1 m-5 p-3 rounded">
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-primary">Login</button>
-    </form>
-    <a href="{% url 'reset_password' %}">Reset Password</a>
-</div>
-<p class="text-center">Don't have an account? <a href="{% url 'register' %}">Create an account</a>.</p>
-{% endif %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} One for all Blog : Login {% endblock %}</title>
+
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'markdownx/admin/css/markdownx.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'markdownx/admin/css/markdownx.min.css' %}"> -->
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .container-login {
+            display: flex;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="username"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    </style>
+    {% endblock %}
+
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid ps-3 pe-3">
+            <a class="navbar-brand" href="{% url 'home' %}">One for all</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="true" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tag_list' %}">Tags</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                </form>
+                {% if user.is_authenticated %}
+                <div class="text-start mt-3 mb-3">
+                    <a href="{% url 'create_post' %}" class="btn btn-outline-light me-2">Create post</a>
+                </div>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
+                                class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li>
+                                <h6 class="dropdown-header">{{ request.user.first_name }} {{ request.user.last_name }}
+                                </h6>
+                                <a class="dropdown-item" href="">@{{ request.user }}</a>
+                            </li>
+                            <li></li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li><a class="dropdown-item" href="{% url 'create_post' %}">Create post</a></li>
+                            <li><a class="dropdown-item" href="{% url 'dashboard' request.user %}">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a></li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li><a class="dropdown-item" href="{% url 'confirm-logout' %}">Log out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                {% else %}
+                <div class="text-start mt-3 mb-3">
+                    <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-warning  me-2">Sign up</a>
+
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}
+    {% if user.is_authenticated %}
+    {% include 'registration/access_denied.html' %}
+    <div class="alert alert-danger text-center" role="alert">
+        You are already Logged in.
+    </div>
+    {% else %}
+
+    <div class="container-login text-center">
+        <main class="form-signin">
+            {% if form.non_field_errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <small>Ughhhh! {{ form.non_field_errors }}</small>
+                
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.username.errors }}
+                <img class="mb-4"
+                    src="https://res.cloudinary.com/magbanum/image/upload/v1628706668/One-for-all-blog/Oneforall-logo_zplltk.svg"
+                    alt="" width="100" height="100">
+                <h1 class="h3 mb-3 fw-normal">Please Login in</h1>
+
+                <div class="form-floating">
+                    {{ form.username }}
+                    <label for="{{ form.username.id_for_label }}">Username</label>
+                </div>
+                <div class="form-floating">
+                    {{ form.password }}
+                    <label for="{{ form.password.id_for_label }}">Password</label>
+                </div>
+                <div class=" mb-3">
+                    <a class="text-secondary" href="{% url 'reset_password' %}">Reset Password</a>
+                </div>
+
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+                <p class="mt-5 mb-3 text-muted">Don't have an account? <a href="{% url 'register' %}">Register now</a>.
+                </p>
+            </form>
+        </main>
+    </div>
+
+    {% endif %}
+
+    {% endblock %}
+    <footer class="footer mt-auto py-3 bg-dark ">
+        <div class="container">
+            <span class="m-0 text-light text-center">Copyright &copy; magbanum</span>
+            <hr>
+            <a href="http://www.djangoproject.com/"><img
+                    src="https://www.djangoproject.com/m/img/badges/djangoproject120x25.gif" border="0"
+                    alt="A Django project." title="A Django project." /></a>
+        </div>
+    </footer>
+
+    {% block js %}
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'markdownx/js/markdownx.js' %}"></script>
+    {% endblock %}
+
+</body>
+
+</html>

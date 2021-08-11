@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -19,11 +20,6 @@ def md_to_text(md):
     soup = BeautifulSoup(html, features='html.parser')
     return soup.get_text()
 
-# non_url_safe = ['"', '#', '$', '%', '&', '+',
-#                     ',', '/', ':', ';', '=', '?',
-#                     '@', '[', '\\', ']', '^', '`',
-#                     '{', '|', '}', '~', "'"]
-
 class Tag(models.Model):
     title = models.CharField(max_length=100, unique=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -38,20 +34,13 @@ class Tag(models.Model):
         return reverse('tag_list')
 
 class Post(models.Model):
-    # def slugify(self, text):
-        
-    #     non_safe = [c for c in text if c in non_url_safe]
-    #     if non_safe:
-    #         for c in non_safe:
-    #             text = text.replace(c, '')
-    #     text = u'-'.join(text.split())
-    #     return text
+    
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
     updated_on = models.DateTimeField(auto_now=True)
     content = MarkdownxField()
-    tags = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True)
+    tags = models.ManyToManyField(Tag, help_text="Hold down “Control”, or “Command” on a Mac, to select more than one.")
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=POST_STATUS, default=0)
 
@@ -76,7 +65,4 @@ class Post(models.Model):
     def body_summary(self):
         return md_to_text(self.content[:200] + "...")
 
-    # def save(self, *args, **kwargs):
-    #     if not self.slug:
-    #         self.slug = self.slugify(self.title)
-    #     super(Post, self).save(*args, **kwargs)
+    

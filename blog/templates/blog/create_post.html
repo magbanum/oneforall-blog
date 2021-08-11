@@ -1,9 +1,8 @@
 {% extends "blog/base_home.html" %}
 {% block title %} One for all Blog : Create post {% endblock %}
-
 {% block content %}
-{% if user.is_authenticated %}
 
+{% if user.is_authenticated %}
 <br>
 <h3 class="pb-4 fst text-center">
     Create post
@@ -19,16 +18,18 @@
         </div>
         <div class="col-md-12">
             {{ form.content.errors }}
-            <label for="{{ form.content.id_for_label }}" class="form-label">Content: [ Markdown Supported ] <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"><i class="fas fa-info-circle"></i></a></i></label>
+            <label for="{{ form.content.id_for_label }}" class="form-label">Content: [ Markdown Supported ] <a
+                    href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"><i
+                        class="fas fa-info-circle"></i></a></i></label>
             {{ form.content }}
         </div>
-
-        <div class="input-group col-md-3">
+        <div class="col-md-3 input-group">
             {{ form.tags.errors }}
-            <span class="input-group-text" id="basic-addon1">Tag</span>
-            <!-- <label for="{{ form.tags.id_for_label }}" class="form-label">Tags</label> -->
+            <span class="input-group-text" id="basic-addon1">Tags</span>
             {{ form.tags }}
         </div>
+        <div class="text-success text-opacity-75">{{ form.tags.help_text}}</div>
+        
         <div class="col-md-3 input-group">
             {{ form.status.errors }}
             <span class="input-group-text" id="basic-addon1">Status</span>
@@ -37,12 +38,15 @@
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Post</button>
-          </div>
+        </div>
     </form>
-   {{ form.media }}
+    {{ form.media }}
 
 </div>
 {% else %}
-<strong>You are not logged in.</strong>
+{% include 'registration/access_denied.html' %}
+<div class="alert alert-danger text-center" role="alert">
+    Login required to view this page.
+</div>
 {% endif %}
 {% endblock %}

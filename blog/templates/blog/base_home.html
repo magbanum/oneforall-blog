@@ -32,15 +32,9 @@
       </button>
       <div class="navbar-collapse collapse" id="navbarColor01">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
+          
           <li class="nav-item">
             <a class="nav-link" href="{% url 'tag_list' %}">Tags</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
           </li>
         </ul>
         <form class="d-flex">
@@ -48,13 +42,13 @@
         </form>
         {% if user.is_authenticated %}
         <div class="text-start mt-3 mb-3">
-          <a href="{% url 'create_post' user %}" class="btn btn-outline-light me-2">Create post</a>
+          <a href="{% url 'create_post' %}" class="btn btn-outline-light me-2">Create post</a>
         </div>
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+              <img src="https://res.cloudinary.com/magbanum/image/upload/v1628706671/One-for-all-blog/avatar_fffoki.png" alt="mdo" width="32" height="32" class="rounded-circle">
             </a>
             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDarkDropdownMenuLink">
               <li>
@@ -67,7 +61,7 @@
                 <hr class="dropdown-divider">
               </li>
 
-              <li><a class="dropdown-item" href="{% url 'create_post' request.user %}">Create post</a></li>
+              <li><a class="dropdown-item" href="{% url 'create_post' %}">Create post</a></li>
               <li><a class="dropdown-item" href="{% url 'dashboard' request.user %}">Dashboard</a></li>
               <li><a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a></li>
 
