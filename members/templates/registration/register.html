@@ -3,8 +3,11 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<strong class="text-center"> You are already logged in.</strong>
-{% else %} 
+{% include 'registration/access_denied.html' %}
+<div class="alert alert-danger text-center" role="alert">
+    You are not allowed here. And you know that.
+</div>
+{% else %}
 <br>
 <h3 class="p-4 fst text-center">
     Register

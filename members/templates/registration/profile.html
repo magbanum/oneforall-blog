@@ -1,0 +1,11 @@
+{% extends 'blog/base_home.html' %}
+
+{% block content %}
+<br>
+
+
+{% for post in post_list %}
+{{ post.title }}
+{% endfor %}
+
+{% endblock %}

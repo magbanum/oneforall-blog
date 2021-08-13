@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 class UserLoginView(LoginView):
     form_class = UserLoginForm
     template_name = 'registration/login.html'
+    redirect_authenticated_user = True
 
 class UserLogoutView(TemplateView):
     template_name = 'registration/confirm_logout.html'
@@ -30,10 +31,8 @@ class UserRegisterView(CreateView):
     success_url = reverse_lazy('login')
 
 class UserDashboard(DetailView):
-    # queryset = Post.objects.all
     slug_field = 'username'
     model = User
-    # print(len(queryset))
     template_name = 'registration/dashboard.html'
 
     def get_context_data(self, **kwargs):
@@ -45,13 +44,25 @@ class UserDashboard(DetailView):
     # def get_object(self):
     #     return self.request.user
 
+class UserProfile(DetailView):
+    slug_field = 'username'
+    model = User
+    template_name = 'registration/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post_list'] = Post.objects.filter(author=self.object,status=1).order_by('-created_on')
+        # print(context)
+        return context
 
 class EditUser(UpdateView):
+    slug_field = 'username'
+    model = User
     form_class = UserChangingForm
     template_name = 'registration/edit_profile.html'
 
-    def get_object(self):
-        return self.request.user
+    # def get_object(self):
+    #     return self.request.user
 
     def get_success_url(self):
         return reverse('dashboard', args=[self.object.username])

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.urls.base import reverse, reverse_lazy
 from django.views.generic.edit import DeleteView, UpdateView
-from blog.forms import PostEditForm, PostForm
+from blog.forms import  PostForm
 from blog.models import Post, Tag
 from django.views.generic import ListView, DetailView,CreateView
 
@@ -15,6 +15,7 @@ class PostList(ListView):
 class PostDetail(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
+    
 
 class TagList(ListView):
     queryset = Tag.objects.all()
@@ -35,7 +36,7 @@ class CreatePost(CreateView):
         return reverse('post_detail', args=(self.object.author, self.object.slug))
     
     def get_object(self):
-        return self.request.user.username
+        return self.request.user
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -43,7 +44,7 @@ class CreatePost(CreateView):
 
 class EditPost(UpdateView):
     model = Post
-    form_class = PostEditForm
+    form_class = PostForm
     template_name = 'blog/edit_post.html'
 
     def get_success_url(self):

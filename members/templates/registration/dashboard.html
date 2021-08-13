@@ -46,8 +46,8 @@
             <div class="container p-0 d-flex justify-content-around">
               <div class="ps-2 pe-2 bd-highlight">
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-item"><a href="{% url 'tag_detail' post.tags %}"><span
-                        class="badge bg-light text-dark">{{ post.tags }}</span></a></li>
+                  <li class="list-item"><a href="{% url 'tag_detail' post.tags.first %}"><span
+                    class="badge bg-light text-dark">{{ post.tags.first }}</span></a></li>
                 </ul>
               </div>
               
