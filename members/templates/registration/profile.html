@@ -1,11 +1,91 @@
 {% extends 'blog/base_home.html' %}
 
 {% block content %}
-<br>
+
+<div class="container-login text-center">
+  
+    <div class="container-md p-4 mt-5 rounded main-raised position-relative">
+        <br><br><br>
+        <div class="position-absolute top-0 start-50 translate-middle"><img src="https://res.cloudinary.com/magbanum/image/upload/v1628706671/One-for-all-blog/avatar_fffoki.png"
+            class="rounded-circle img-thumbnail" style="width: 150px;" alt="..."></div>
+        <h1>{{ user.get_full_name }}</h1>
+        <h4>@{{ user.username }}</h4>
+        <p>Tagline goes here. For me it's a Self-taught Developer.</p>
+        {% if request.user == user %}
+        <a href="{% url 'edit_user' request.user %}" class="btn btn-primary">Edit profile</a>
+        {% endif %}
+    </div>
+</div>
+<div class="container-xxl bg-dark"><br></div>
+<!-- begin #profile-post tab -->
+<div class="container-md" id="profile-post">
+    <ul class="timeline">
+        <li>
+            <div class="timeline-icon">
+                <a href="javascript:;">&nbsp;</a>
+            </div>
+            <div class="timeline-body">
+                <div class="timeline-content">
+                    <h4>Latest Posts</h4>
+                </div>
+            </div>
+        </li>
+        {% for post in post_list %}
+
+        <li>
+            <!-- begin timeline-time -->
+            <div class="timeline-time">
+                <span class="date">{{ post.created_on.date }}</span>
+                <span class="time">{{ post.created_on.time }}</span>
+            </div>
+            <!-- end timeline-time -->
+            <!-- begin timeline-icon -->
+            <div class="timeline-icon">
+                <a href="javascript:;">&nbsp;</a>
+            </div>
+            <!-- end timeline-icon -->
+            <!-- begin timeline-body -->
+            <div class="timeline-body">
+                <div class="timeline-header">
+                    <span class="userimage"><img
+                            src="https://res.cloudinary.com/magbanum/image/upload/v1628706671/One-for-all-blog/avatar_fffoki.png"
+                            alt=""></span>
+                    <span class="username">{{post.author.get_full_name }}</span>
+                    <span class="pull-right text-muted">1,021,282 Views</span>
+                </div>
+                <a href="{% url 'post_detail' post.author post.slug %}">
+                    <div class="timeline-content">
+                        <h4 class="template-title">
+                            {{ post.title }}
+                        </h4>
+                        <p>{{ post.body_summary }}</p>
+                        <p class="m-t-20">
+                            <img src="../assets/img/gallery/gallery-5.jpg" alt="">
+                        </p>
+                        <ul class="list-group list-group-horizontal">
+                            <li class="list-item"><a href="{% url 'tag_detail' post.tags.first %}"><span
+                                        class="badge bg-light text-dark">{{ post.tags.first }}</span></a></li>
+                        </ul>
+                    </div>
+                </a>
+                <div class="timeline-footer">
+                    <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i
+                            class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
+                    <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i
+                            class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a>
+                    <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i
+                            class="fa fa-share fa-fw fa-lg m-r-3"></i>
+                        Share</a>
+                </div>
+            </div>
+            <!-- end timeline-body -->
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
 
-{% for post in post_list %}
-{{ post.title }}
-{% endfor %}
+
+
 
 {% endblock %}

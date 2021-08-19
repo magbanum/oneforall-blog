@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'blog',
     'members',
     'markdownx',
+    'api',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
