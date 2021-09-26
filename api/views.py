@@ -1,8 +1,7 @@
-from api.serializers import UserSerializer, PostSerializer
+from api.serializers import UserSerializer, PostSerializer, TagSerializer
 from rest_framework import  viewsets, permissions
 from django.contrib.auth.models import User
-from blog.models import Post
-
+from blog.models import Post, Tag
 class UserViewset(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
@@ -12,3 +11,8 @@ class PostViewset(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_on')
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class TagViewset(viewsets.ModelViewSet):
+    queryset = Tag.objects.all().order_by("-created_on")
+    serializer_class = TagSerializer
+    permision_classes = [permissions.IsAuthenticatedOrReadOnly]

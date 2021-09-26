@@ -17,7 +17,17 @@
   <link rel="stylesheet" href="{% static 'markdownx/admin/css/markdownx.css' %}">
   <!-- <link rel="stylesheet" href="{% static 'markdownx/admin/css/markdownx.min.css' %}"> -->
   {% endblock %}
- 
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWDNJ71D1M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-DWDNJ71D1M');
+  </script>
+
 </head>
 
 <body>
@@ -31,7 +41,7 @@
       </button>
       <div class="navbar-collapse collapse" id="navbarColor01">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          
+
           <li class="nav-item">
             <a class="nav-link" href="{% url 'tag_list' %}">Tags</a>
           </li>
@@ -47,7 +57,8 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://res.cloudinary.com/magbanum/image/upload/v1628706671/One-for-all-blog/avatar_fffoki.png" alt="mdo" width="32" height="32" class="rounded-circle">
+              <img src="https://res.cloudinary.com/magbanum/image/upload/v1628706671/One-for-all-blog/avatar_fffoki.png"
+                alt="mdo" width="32" height="32" class="rounded-circle">
             </a>
             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDarkDropdownMenuLink">
               <li>
